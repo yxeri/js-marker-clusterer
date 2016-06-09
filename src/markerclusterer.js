@@ -96,7 +96,9 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    */
   this.ready_ = false;
 
-  var options = opt_options || {};
+  var options = opt_options || {}; 
+
+  this.singleSize_ = options['singleSize'] || false;
 
   /**
    * @type {number}
@@ -108,7 +110,6 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    * @private
    */
   this.minClusterSize_ = options['minimumClusterSize'] || 2;
-
 
   /**
    * @type {?number}
@@ -244,12 +245,20 @@ MarkerClusterer.prototype.setupStyles_ = function() {
     return;
   }
 
-  for (var i = 0, size; size = this.sizes[i]; i++) {
+  if (this.singleSize_) {
     this.styles_.push({
-      url: this.imagePath_ + (i + 1) + '.' + this.imageExtension_,
-      height: size,
-      width: size
-    });
+        url: this.imagePath_ + '.' + this.imageExtension_,
+        height: size,
+        width: size
+      });
+  } else {
+    for (var i = 0, size; size = this.sizes[i]; i++) {
+      this.styles_.push({
+        url: this.imagePath_ + (i + 1) + '.' + this.imageExtension_,
+        height: size,
+        width: size
+      });
+    }
   }
 };
 
